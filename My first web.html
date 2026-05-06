@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Digital Store | Malik Noman Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // Yahan apni Public Key lagayein
+        })();
+    </script>
+
+    <style>
+        :root { --neon: #00f2ea; --primary: #f85606; --bg: #050508; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: white; overflow-x: hidden; }
+
+        /* UPPER OPTIONS: TOP BAR */
+        .top-bar { background: #111; padding: 10px 8%; display: flex; justify-content: space-between; font-size: 12px; color: #888; border-bottom: 1px solid #222; }
+        header { background: rgba(5,5,8,0.9); backdrop-filter: blur(10px); padding: 20px 8%; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-family: 'Orbitron'; font-size: 22px; color: var(--neon); text-shadow: 0 0 10px var(--neon); text-decoration: none; }
+        
+        .search-box input { width: 300px; padding: 10px 20px; border-radius: 25px; border: 1px solid #333; background: #151518; color: white; outline: none; transition: 0.3s; }
+        .search-box input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0,242,234,0.2); }
+
+        /* HYPER NEON CARDS */
+        .container { padding: 40px 8%; min-height: 70vh; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px; }
+        .neon-card {
+            position: relative; background: #0a0a0c; border-radius: 20px; padding: 30px; text-align: center;
+            overflow: hidden; transition: 0.3s; z-index: 1; border: 1px solid #1a1a1a;
+        }
+        .neon-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--neon));
+            animation: rotateNeon 4s linear infinite; z-index: -1;
+        }
+        .neon-card::after { content: ''; position: absolute; inset: 2px; background: #0a0a0c; border-radius: 18px; z-index: -1; }
+        @keyframes rotateNeon { 100% { transform: rotate(360deg); } }
+
+        /* FLOATING HUB */
+        .floating-hub { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
+        .hub-link { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; text-decoration: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: 0.3s; }
+        .hub-wa { background: #25d366; }
+        .hub-tk { background: #000; border: 1px solid #fff; }
+
+        /* ULTRA SMOOTH DRAWER */
+        .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #08080a; border-left: 2px solid var(--neon); padding: 40px; transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1); z-index: 6000; }
+        .drawer.active { right: 0; }
+        .drawer input { width: 100%; padding: 15px; margin-bottom: 20px; background: #111; border: 1px solid #333; color: white; border-radius: 10px; }
+        .order-btn { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 10px; color: white; font-weight: 800; cursor: pointer; }
+
+        /* LOWER OPTIONS: FOOTER */
+        footer { background: #08080a; padding: 60px 8% 20px; border-top: 1px solid #222; margin-top: 50px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-col h4 { color: var(--neon); margin-bottom: 20px; font-family: 'Orbitron'; }
+        .footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 20px; text-align: center; margin-top: 40px; font-size: 12px; color: #444; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span><i class="fas fa-check-circle"></i> Verified Seller: Malik Noman</span>
+        <span><i class="fas fa-bolt"></i> Instant Delivery</span>
+    </div>
+
+    <header>
+        <a href="#" class="logo">ELITE STORE</a>
+        <div class="search-box">
+            <input type="text" id="mainSearch" placeholder="Search accounts...">
+        </div>
+    </header>
+
+    <div class="floating-hub">
+        <a href="https://chat.whatsapp.com/I7bzNlrLdxf7UQsxee6Jka" class="hub-link hub-wa"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.tiktok.com/@maliknoman4238" class="hub-link hub-tk"><i class="fab fa-tiktok"></i></a>
+    </div>
+
+    <div class="container">
+        <div class="grid" id="accountGrid"></div>
+    </div>
+
+    <div class="drawer" id="orderDrawer">
+        <h2 id="orderTitle" style="color:var(--neon); margin-bottom:30px;"></h2>
+        <input type="text" id="custName" placeholder="Full Name">
+        <input type="email" id="custEmail" placeholder="Email Address">
+        <button class="order-btn" onclick="v18.confirmOrder()">CONFIRM & SEND EMAIL</button>
+        <button onclick="v18.toggleDrawer(false)" style="background:none; border:none; color:#444; margin-top:20px; cursor:pointer; width:100%;">Cancel</button>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Malik Noman Store</h4>
+                <p style="color:#666; font-size:14px;">International accounts market leader.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links</h4>
+                <a href="#" style="color:#666; text-decoration:none; display:block;">Terms & Conditions</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 Malik Noman Store. All Rights Reserved.</div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
